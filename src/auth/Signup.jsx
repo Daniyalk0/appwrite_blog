@@ -107,7 +107,7 @@ function Signup() {
                   className={`absolute top-[100%] left-[2%] text-[0.7vw] 
                   tablet:text-[1vw]  text-red-500 ${
                     errors.name ? "" : "border-red-500"
-                  } font-bold mobile:left-[6%] mobile:text-[1.4vw]`}
+                  } font-bold mobile:left-[6%] mobile:text-[1.6vw]`}
                 >
                   {errors.name ? "Name is Required*" : null}
                 </p>
@@ -126,7 +126,7 @@ function Signup() {
                   })}
                 />
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.4vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.6vw]`}
                 >
                   {errors.email ? errors.email.message : null}
                 </p>
@@ -157,7 +157,7 @@ function Signup() {
                   />
                   <PasswordShow onClick={() => setShowPassword(prev => !prev)} content={showPassword ? <FaRegEyeSlash /> : <FaRegEye/>}/>
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.4vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.6vw]`}
                 >
                   {errors.password ? errors.password.message : null}
                 </p>
@@ -179,7 +179,7 @@ function Signup() {
                   <PasswordShow onClick={() => setShowPasswordConfirm(prev => !prev)} content={showPasswordConfirm ? <FaRegEyeSlash /> : <FaRegEye/>}/>
 
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.4vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.6vw]`}
                 >
                   {errors.confirmPassword
                     ? errors.confirmPassword.message

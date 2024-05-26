@@ -32,12 +32,10 @@ function Header({ className }) {
       document.querySelector("html").classList.add(themecheck);
       setdarkMode(themecheck);
       dispatch(getCurrentTheme(themecheck));
-      console.log('theme', themecheck);
     }
     setIsReady(true);
   }, [themeMode]);
-  // useEffect(() => {
-  // }, [isReady, themeMode]);
+
 
   const themeSwitch = () => {
     const theme = themeMode === "dark" ? "light" : "dark";
@@ -62,7 +60,7 @@ function Header({ className }) {
   return (
     <div
       className={`flex items-center w-full py-1 px-6 justify-evenly  tablet: tablet:py-4 tablet:justify-between  ${className}  z-[20]  fixed top-0  max-w-[1400px] tablet:fixed backdrop-filter 
-      backdrop-blur-lg`}
+      backdrop-blur-lg`} onClick={() => setIsOpen(false)}
     >
       <div className="flex items-center justify-between">
         {/* <img

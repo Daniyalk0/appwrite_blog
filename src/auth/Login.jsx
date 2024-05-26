@@ -107,7 +107,7 @@ function Login() {
                   })}
                 />
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.4vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.6vw]`}
                 >
                   {errors.email ? errors.email.message : null}
                 </p>
@@ -125,12 +125,12 @@ function Login() {
                 />
                 <PasswordShow onClick={() => setShowPassword(prev => !prev)} content={showPassword ? <FaRegEyeSlash /> : <FaRegEye/>}/>
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.4vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.6vw]`}
                 >
                   {errors.password ? errors.password.message : null}
                 </p>
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.4vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.6vw]`}
                 >
                   {error ? 'Incorrect Password': null}
                 </p>
