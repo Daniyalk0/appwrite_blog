@@ -37,6 +37,7 @@ function Header({ className }) {
   }, [themeMode]);
 
 
+
   const themeSwitch = () => {
     const theme = themeMode === "dark" ? "light" : "dark";
     localStorage.setItem("themeMode", theme);
@@ -60,7 +61,7 @@ function Header({ className }) {
   return (
     <div
       className={`flex items-center w-full py-1 px-6 justify-evenly  tablet: tablet:py-4 tablet:justify-between  ${className}  z-[20]  fixed top-0  max-w-[1400px] tablet:fixed backdrop-filter 
-      backdrop-blur-lg`} onClick={() => setIsOpen(false)}
+      backdrop-blur-lg`}
     >
       <div className="flex items-center justify-between">
         {/* <img
@@ -109,7 +110,7 @@ function Header({ className }) {
               className={({ isActive }) =>
                 `${
                   nav.name === "Profile" ? "hidden" : ""
-                } tablet:block text-darkgreen py-1 px-5 rounded-lg text-center hover:scale-[1.1] transition-all duration-200 cursor-pointer tablet:text-zinc-900 tablet:hover:text-green-200 mobile:text-[14px] dark:text-zinc-200 dark:hover:text-green-300 tablet:text-[20px]   
+                } tablet:block text-darkgreen py-1 px-5 rounded-lg text-center hover:scale-[1.1] transition-all duration-200 cursor-pointer tablet:text-zinc-900 tablet:hover:text-green-200 mobile:text-[12px] dark:text-zinc-200 dark:hover:text-green-300 tablet:text-[20px]   
                 ${
                   isActive
                     ? " shadow-lg shadow-black text-red-700 dark:shadow-white dark:shadow-sm"
