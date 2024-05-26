@@ -16,12 +16,10 @@ import { FallingLines } from "react-loader-spinner";
 import Footer from "./components/Footer/Footer";
 
 function App() {
-  const ready = useSelector((state) => state.themee.theme);
   const authData = useSelector((state) => state.auth.userData);
   const postData = useSelector((state) => state.posts.postsData);
 
   const dispatch = useDispatch();
-  const mainStyle = ready ? {} : { visibility: "hidden" };
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -56,7 +54,7 @@ function App() {
   return loading ? (
     <div className="overflow-hidden">
       <Container>
-        <div style={mainStyle}>
+        <div>
           <div>
             <Header className="" />
           </div>
