@@ -77,7 +77,7 @@ function Post() {
                   <div>
                     <Auth_btn
                       text=""
-                      className=" w-[5vw] mobile:w-[7vw] text-[1vw] border-white max-h-[10px]"
+                      className=" w-[5vw] mobile:w-[12vw] text-[1vw] border-white max-h-[10px]"
                       onClick={deletePost}
                     >
                       <MdDelete size={20} color="" />
@@ -86,17 +86,17 @@ function Post() {
                   <NavLink to={`/editPost/${slug}`}>
                     <Auth_btn
                       text=""
-                      className=" w-[5vw] mobile:w-[7vw] text-[1vw] max-h-[10px]"
+                      className=" w-[5vw] mobile:w-[12vw] text-[1vw] max-h-[10px]"
                     >
                       <FaEdit size={20} color="" />
                     </Auth_btn>
                   </NavLink>
                 </div>
               )}
-              <div className=" w-full   flex justify-center flex-col items-center ">
-                <h1 className="text-[4vw] text-white">{post?.title}</h1>
+              <div className=" w-full flex justify-center flex-col items-center ">
+                <h1 className="text-[4vw] tablet:text-[6vw] mobile:text-[9vw] text-white">{post?.title}</h1>
                 <div className="w-[70%] ">
-                  <p className="text-[1vw] text-center text-white w-full break-words">
+                  <p className="text-[1vw] text-center text-white w-full break-words tablet:text-[2vw] mobile:text-[4vw]">
                     {parse(post?.content)}
                   </p>
                 </div>
