@@ -95,7 +95,7 @@ function Signup() {
               className="flex flex-col justify-center w-full items-center gap-[3vh] mb-[3%]"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <div className="w-[40vw] min-w-[350px] max-w-[400px] relative flex justify-center">
+              <div className="w-[40vw] min-w-[300px] max-w-[400px] relative flex justify-center">
                 <Input
                   label="Name"
                   className={`text-[15px] py-2`}
@@ -112,7 +112,7 @@ function Signup() {
                   {errors.name ? "Name is Required*" : null}
                 </p>
               </div>
-              <div className="w-[40vw] min-w-[350px] max-w-[400px] relative flex justify-center">
+              <div className="w-[40vw] min-w-[300px] max-w-[400px] relative flex justify-center">
                 <Input
                   label="Email"
                   type="email"
@@ -131,7 +131,7 @@ function Signup() {
                   {errors.email ? errors.email.message : null}
                 </p>
               </div>
-              <div className="w-[40vw] min-w-[350px] max-w-[400px] relative flex justify-center ">
+              <div className="w-[40vw] min-w-[300px] max-w-[400px] relative flex justify-center ">
                 <Input
                   label="Password"
                   type={`${showPassword ? 'text' : 'password'}`}
@@ -162,7 +162,7 @@ function Signup() {
                   {errors.password ? errors.password.message : null}
                 </p>
               </div>
-              <div className="w-[40vw] min-w-[350px] max-w-[400px] relative flex justify-center">
+              <div className="w-[40vw] min-w-[300px] max-w-[400px] relative flex justify-center">
                 <Input
                   label="Confirm Password"
                   type={`${showPasswordConfirm ? 'text' : 'password'}`}

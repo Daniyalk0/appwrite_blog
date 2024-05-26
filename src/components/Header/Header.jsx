@@ -100,7 +100,7 @@ function Header({ className }) {
       <div
         className={`flex w-[60%]  top-[0px] justify-center gap-[3vw] mobile:gap-[7vw] p-3 tablet:flex-col 
           ${isOpen ? "tablet:right-[0px] " : "tablet:right-[-300px]"} 
-          tablet:flex tablet:gap-[70px] bg-white dark:bg-zinc-800 tablet:w-[30%] tablet:h-[111vh] tablet:text-2xl transition-all duration-300  mobile:w-[40%] tablet:rounded-s-3xl tablet:rounded-none shadow-xl shadow-darkgreen rounded-3xl tablet:absolute `}
+          tablet:flex tablet:gap-[70px] bg-white dark:bg-zinc-800 tablet:w-[30%] tablet:h-[100vh] tablet:text-2xl transition-all duration-300  mobile:w-[40%] tablet:rounded-s-3xl tablet:rounded-none shadow-xl shadow-darkgreen rounded-3xl tablet:absolute `}
       >
         {navItmes.map((nav) =>
           nav.active ? (

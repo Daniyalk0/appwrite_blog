@@ -97,7 +97,7 @@ function Login() {
               className="flex flex-col justify-center w-full items-center gap-[3vh] mb-[3%]"
               onSubmit={handleSubmit(log)}
             >
-             <div className="w-[40vw] min-w-[350px] max-w-[400px] relative flex justify-center ">
+             <div className="w-[40vw] min-w-[300px] max-w-[400px] relative flex justify-center ">
                 <Input
                   label="Email"
                   type="email"
@@ -112,7 +112,7 @@ function Login() {
                   {errors.email ? errors.email.message : null}
                 </p>
               </div>
-              <div className="w-[40vw] min-w-[350px] max-w-[400px] relative flex justify-center ">
+              <div className="w-[40vw] min-w-[300px] max-w-[400px] relative flex justify-center ">
                 <Input
                   label="Password"
                 
