@@ -21,8 +21,6 @@ export default function RTE({
               apiKey="ub34k04vlgyd2e480norjhzp9gzbwhciqrb1ikm1vvzcmxiq"
               initialValue={defaultValue}
               init={{
-                content_security_policy:
-                  "default-src 'self' https://appwrite-blog-nine-omega.vercel.app/",
                 initialValue: defaultValue,
                 height: 400,
                 menubar: true,
