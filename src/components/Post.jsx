@@ -10,7 +10,6 @@ import { MdDelete } from "react-icons/md";
 import Loading from "./Loading";
 
 function Post() {
-
   const [post, setpost] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -25,9 +24,9 @@ function Post() {
     if (slug) {
       service.getPost(slug).then((postt) => {
         if (postt) {
-          setLoading(false)
+          setLoading(false);
           setpost(postt);
-          console.log('post', postt);
+          console.log("post", postt);
         } else {
           console.log("no post in post comp.");
         }
@@ -48,8 +47,6 @@ function Post() {
     }
   };
 
-
-
   if (loading) {
     return <Loading className="h-screen" />;
   }
@@ -61,47 +58,43 @@ function Post() {
           <div
             className={`w-full h-auto min-h-[700px] p-4 flex justify-center items-center relative pt-[90px] flex-col tablet:pt-0`}
           >
-            <img
-              src="https://t4.ftcdn.net/jpg/05/71/83/47/360_F_571834789_ujYbUnH190iUokdDhZq7GXeTBRgqYVwa.jpg"
-              alt="authimage"
-              className="w-full h-full brightness-75 absolute top-0 z-[-1] "
-            />
-            <div className="w-[50%] max-w-[700px] min-w-[400px] flex justify-center relative items-center flex-col gap-[1vw]">
+            <div className="w-full max-w-[1200px]  flex justify-evenly relative items-center tablet:flex-col tablet:mt-[120px]">
               <img
                 src={service.getFilePreview(post?.imageId)}
                 alt="no image"
                 className="rounded-xl  w-[100%] max-h-[420px] hover:shadow-md hover:shadow-zinc-400 transition-all duration-200 object-fit"
               />
-              {isAuthor && (
-                <div className="flex gap-3 ">
-                  <div>
-                    <Auth_btn
-                      text=""
-                      className=" w-[5vw] mobile:w-[12vw] text-[1vw] border-white max-h-[10px]"
-                      onClick={deletePost}
-                    >
-                      <MdDelete size={20} color="" />
-                    </Auth_btn>
-                  </div>
-                  <NavLink to={`/editPost/${slug}`}>
-                    <Auth_btn
-                      text=""
-                      className=" w-[5vw] mobile:w-[12vw] text-[1vw] max-h-[10px]"
-                    >
-                      <FaEdit size={20} color="" />
-                    </Auth_btn>
-                  </NavLink>
-                </div>
-              )}
-              <div className=" w-full flex justify-center flex-col items-center ">
-                <h1 className="text-[4vw] tablet:text-[6vw] mobile:text-[9vw] text-white">{post?.title}</h1>
-                <div className="w-[70%] ">
-                  <p className="text-[1vw] text-center text-white w-full break-words tablet:text-[2vw] mobile:text-[4vw]">
+              <div className=" w-[100%] flex  flex-col items-left mx-[3vw] flex-wrap tablet:mt-[30px] mobile:mt-[50px]">
+                <h1 className="text-[4vw] tablet:text-[6vw] mobile:text-[9vw] text-white w-full content">
+                  {post?.title}
+                </h1>
+    
+                  <p className="text-[1vw]  text-white w-full break-words tablet:text-[2vw] mobile:text-[4vw] content">
                     {parse(post?.content)}
                   </p>
-                </div>
               </div>
             </div>
+            {isAuthor && (
+              <div className="flex gap-3 mt-[10px] mobile:mt-[40px]">
+                <div>
+                  <Auth_btn
+                    text=""
+                    className=" w-[5vw] mobile:w-[20vw] text-[1vw] border-white max-h-[10px]"
+                    onClick={deletePost}
+                  >
+                    <MdDelete size={20} color="" />
+                  </Auth_btn>
+                </div>
+                <NavLink to={`/editPost/${slug}`}>
+                  <Auth_btn
+                    text=""
+                    className=" w-[5vw] mobile:w-[20vw] text-[1vw] max-h-[10px]"
+                  >
+                    <FaEdit size={20} color="" />
+                  </Auth_btn>
+                </NavLink>
+              </div>
+            )}
           </div>
         </Container>
       </>
