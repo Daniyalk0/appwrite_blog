@@ -19,6 +19,8 @@ import Profile from "./components/Profile.jsx";
 import AllPosts from "./components/AllPosts.jsx";
 import Post from "./components/Post.jsx";
 import EditPost from "./components/EditPost.jsx";
+import '@fortawesome/fontawesome-free/css/all.min.css';  // Import Font Awesome CSS
+import './index.css';
 
 
 const router = createBrowserRouter([

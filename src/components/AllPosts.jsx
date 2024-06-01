@@ -37,12 +37,12 @@ function AllPosts() {
   return (
     <Container className="">
       <div
-        className={`  w-full h-auto py-[50px]  flex flex-col justify-center items-center mt-[80px] relative min-h-screen  `}
+        className={`  w-full h-auto py-[50px]  flex justify-center items-center mt-[80px] relative min-h-screen  `}
       >
   
 
         {posts.length ? (
-          <div className=" w-full h-full flex justify-center gap-[3vw] tablet:gap-[7vw] flex-wrap items-center mx-[20px] px-[10px mobile:mt-[40px]">
+          <div className=" w-full h-full flex justify-center gap-[3vw] tablet:gap-[7vw] flex-col-reverse  flex-wrap items-center mx-[20px] px-[10px mobile:mt-[40px]">
             {posts.map((post, index) => (
               
               <PostCard 

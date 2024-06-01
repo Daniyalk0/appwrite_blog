@@ -14,6 +14,8 @@ import service from "./own_appwrite/Config";
 import { getPostsData } from "./store/PostsSlice";
 import { FallingLines } from "react-loader-spinner";
 import Footer from "./components/Footer/Footer";
+import 'font-awesome/css/font-awesome.min.css';
+
 
 function App() {
   const authData = useSelector((state) => state.auth.userData);

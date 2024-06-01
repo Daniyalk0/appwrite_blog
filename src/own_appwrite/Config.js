@@ -14,7 +14,18 @@ export class ConfigService {
     this.databases = new Databases(this.client);
   }
 
-  async createPost({ slug, imageId, title, content, status, userId, author,date}) {
+  async createPost({
+    slug,
+    imageId,
+    title,
+    content,
+    status,
+    userId,
+    author,
+    date,
+    likes = 0,
+    userLiked,
+  }) {
     try {
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
@@ -28,6 +39,8 @@ export class ConfigService {
           userId,
           author,
           date,
+          likes,
+          userLiked,
         }
       );
     } catch (error) {
@@ -35,7 +48,7 @@ export class ConfigService {
       return false;
     }
   }
-  async updatePost(slug,{ title, content, featuredImage, status , author}) {
+  async updatePost(slug, { title, content, featuredImage, status, author }) {
     try {
       return await this.databases.updateDocument(
         conf.appwriteDatabaseId,
@@ -94,6 +107,155 @@ export class ConfigService {
     }
   }
 
+  async createLike(likeId, userId, postId, userLiked) {
+    try {
+      const likeExists = await this.getLikesByUserAndPost(userId, postId);
+      if (likeExists) {
+        return;
+      } else {
+        this.databases.createDocument(
+          conf.appwriteDatabaseId,
+          conf.appwriteLikesCollectionId,
+          likeId,
+          {
+            userId,
+            postId,
+            likeId,
+            userLiked,
+          }
+        );
+      }
+    } catch (error) {
+      console.log("Appwrite serive :: createLikes :: error  ", error);
+    }
+  }
+
+  async getLikesByUserAndPost(userId, postId) {
+    try {
+      const query = [
+        Query.equal("userId", userId),
+        Query.equal("postId", postId),
+      ];
+      const result = await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteLikesCollectionId,
+        query
+      );
+
+      if (result.documents.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log("Appwrite serive :: getLikesByUserAndPost:: error  ", error);
+    }
+  }
+
+  async displayLikes(postId) {
+    try {
+      const query = Query.equal("postId", postId);
+
+      return await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteLikesCollectionId,
+        query
+      );
+    } catch (error) {
+      console.log("Appwrite serive :: displayLikes:: error  ", error);
+    }
+  }
+
+  async deleteLike(likeId) {
+    try {
+      return await this.databases.deleteDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteLikesCollectionId,
+        likeId
+      );
+    } catch (error) {
+      console.log("Appwrite serive :: deleteLike:: error  ", error);
+    }
+  }
+
+  async updateLike(postId, newLikes) {
+    try {
+      return await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        postId,
+        {
+          likes: newLikes,
+        }
+      );
+    } catch (error) {
+      console.log("Appwrite serive :: UpdateLike:: error  ", error);
+    }
+  }
+  async updateLikedUsers(postId, users) {
+    try {
+      // Fetch the existing document first
+      const document = await this.databases.getDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        postId
+      );
+
+      // Initialize with empty array if not present
+      const existingLikedUsers = document.userLiked || [];
+
+      // Combine existing and new users
+      const updatedLikedUsers = [...existingLikedUsers, users];
+      console.log("updatedLikedUsers", updatedLikedUsers);
+
+      // Update the document with the new list of liked users
+      return await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        postId,
+        {
+          userLiked: updatedLikedUsers,
+        }
+      );
+    } catch (error) {
+      console.log("Appwrite service :: updateLikedUsers:: error ", error);
+    }
+  }
+
+  async deleteLikedUser(postId, user) {
+    try {
+      const document = await this.databases.getDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        postId
+      );
+      const userLiked = document.userLiked;
+      const filterUnlikeUser = userLiked.filter((like) => like !== user)
+
+      return await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        postId,
+        {
+          userLiked: filterUnlikeUser,
+        }
+      );
+    } catch (error) {
+      console.log("Appwrite service :: deleteLikedUser:: error ", error);
+    }
+  }
+
+  // async showLikes(postId) {
+  //   try {
+  //     const query = Query.equal("postId", postId);
+
+  //     this.databases.listDocuments(
+
+  //     )
+  //   } catch (error) {
+  //     console.log("Appwrite serive :: showLikes:: error  ", error);
+  //   }
+  // }
   // file upload service
 
   async uploadFile(file) {
@@ -128,5 +290,5 @@ export class ConfigService {
   }
 }
 
-const configService = new ConfigService()
+const configService = new ConfigService();
 export default configService;
