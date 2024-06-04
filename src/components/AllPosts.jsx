@@ -10,7 +10,7 @@ function AllPosts() {
   const [loading, setLoading] = useState(false);
   const [date, setdate] = useState({day: '', month: '', year: ''})
     
-    // console.log('date', date);
+    // console.log('post', posts);
 
   
   const allposts = async () => {
@@ -18,7 +18,7 @@ function AllPosts() {
     if (postsData) {
       setPosts(postsData);
     } else {
-      alert("no posts in all posts!");
+      console.log('no posts in allposts!!');
     }
   };
   allposts();

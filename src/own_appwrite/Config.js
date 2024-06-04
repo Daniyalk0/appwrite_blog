@@ -25,6 +25,7 @@ export class ConfigService {
     date,
     likes = 0,
     userLiked,
+    email,
   }) {
     try {
       return await this.databases.createDocument(
@@ -41,6 +42,7 @@ export class ConfigService {
           date,
           likes,
           userLiked,
+          email,
         }
       );
     } catch (error) {
@@ -48,7 +50,7 @@ export class ConfigService {
       return false;
     }
   }
-  async updatePost(slug, { title, content, featuredImage, status, author }) {
+  async updatePost(slug, { title, content, featuredImage, status, author, email }) {
     try {
       return await this.databases.updateDocument(
         conf.appwriteDatabaseId,
@@ -60,6 +62,7 @@ export class ConfigService {
           featuredImage,
           status,
           author,
+          email,
         }
       );
     } catch (error) {
@@ -94,15 +97,25 @@ export class ConfigService {
     }
   }
 
-  async getPosts(queries = [Query.equal("status", "active")]) {
+  async getPosts(queries = []) {
     try {
-      return await this.databases.listDocuments(
+      // Default query to fetch active posts
+      const defaultQuery = Query.equal('status', 'active');
+
+      // Combine default query with additional queries
+      const allQueries = [defaultQuery, ...queries];
+
+      // Fetch documents from the collection using combined queries
+      const response = await this.databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
-        queries
+        allQueries
       );
+      return response
+      
+      // return response.documents;
     } catch (error) {
-      console.log("Appwrite serive :: getPosts :: error  ", error);
+      console.error('Appwrite service :: getPosts :: error', error);
       return false;
     }
   }

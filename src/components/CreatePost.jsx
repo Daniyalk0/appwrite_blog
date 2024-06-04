@@ -17,7 +17,8 @@ import { nanoid } from "nanoid";
 function CreatePost({ post }) {
   const [slugg, setSlug] = useState("");
   const [loading, setLoading] = useState(false);
-  const loaction = useLocation()
+  const [emaill, setEmail] = useState(false);
+  const loaction = useLocation();
 
   const [ids, setIds] = useState();
 
@@ -41,12 +42,12 @@ function CreatePost({ post }) {
         slug: post?.$id || "",
         status: post?.status || "active",
         author: post?.author || "",
+        author: post?.email || "",
       },
     });
 
   const date = new Date();
 
-  // setValue()
 
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
@@ -55,6 +56,15 @@ function CreatePost({ post }) {
     const username = userData.name;
     setValue("author", username);
   }, [userData]);
+
+  useEffect(() => {
+    const userEmail = userData.email;
+    if (emaill) {
+      setValue("email", null);
+    } else {
+      setValue("email", userEmail);
+    }
+  }, [userData, emaill]);
 
   const submit = async (data) => {
     setLoading(true);
@@ -121,12 +131,12 @@ function CreatePost({ post }) {
     <>
       <Container className="relative">
         <div
-          className={`w-full h-auto min-h-[110vh] top-0 ${
+          className={`w-full h-auto min-h-[110vh] top-0  ${
             post && "startLoading"
           }`}
         >
           <form
-            className={` relative w-full h-auto  mt-[80px] mb-[30px] tablet:mt-[80px]  text-white overflow-hidden `}
+            className={` relative w-full h-auto  mt-[80px] mb-[0px] pb-[10px] tablet:mt-[80px]  text-white overflow-hidden `}
             onSubmit={handleSubmit(submit)}
           >
             <div className="w-[50vw] flex justify-left ml-[3vw] tablet:justify-center pt-[20px] tablet:w-[90vw] tablet:ml-[5vw]">
@@ -139,6 +149,26 @@ function CreatePost({ post }) {
                   required: true,
                 })}
               />
+            </div>
+            <div className="w-[50vw] flex justify-left items-left ml-[3vw] tablet:justify-center pt-[20px] tablet:w-[90vw] tablet:ml-[5vw] flex-col mobile:ml-[9vw]">
+              <Input
+                disabled={loading}
+                className="h-[40px] text-zinc-800 "
+                placeholder="Email"
+                label="Email: "
+                {...register("email", {
+                  required: !emaill,
+                })}
+              />
+              <div className="flex w-[50%] ml-[5px]">
+                <p className="text-[10px] text-yellow-500 dark:text-white">Don't show my email to anyone</p>
+                <input
+                  type="checkbox"
+                  onChange={() => setEmail((prev) => !prev)}
+                  checked={emaill}
+                  className="cursor-pointer"
+                />
+              </div>
             </div>
             <div className="w-[50vw] flex justify-left ml-[3vw] tablet:justify-center pt-[20px] tablet:w-[90vw] tablet:ml-[5vw]">
               <Input

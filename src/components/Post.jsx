@@ -17,20 +17,20 @@ function Post() {
   const [likeLoading, setlikeLoading] = useState();
   const [user, setuser] = useState(null);
   const [likedUsers, setLikedUsers] = useState([]);
-  const userdata = useSelector((state) => state.auth.userData);
+  // const userdata = useSelector((state) => state.auth.userData);
 
+  const userData = useSelector((state) => state.auth.userData);
   // console.log('post', post);
   const [likesCount, setLikesCount] = useState();
   const [liked, setLiked] = useState(false);
   useEffect(() => {
-    if (userdata) {
-      setuser(userdata);
+    if (userData) {
+      setuser(userData);
     } else {
       alert("no user data");
     }
-  }, [userdata]);
+  }, [userData]);
 
-  const userData = useSelector((state) => state.auth.userData);
 
   const likeId = userData?.$id.slice(-5) + post?.$id.slice(-5);
   console.log("like Id", likeId);
@@ -173,6 +173,8 @@ function Post() {
               </p>
             </div>
               <div className=" w-[100%] flex  flex-col items-left mx-[3vw] flex-wrap tablet:mt-[30px] mobile:mt-[50px]">
+              <p className="text-[13px] text-zinc-800">posted by: <NavLink to={`/userCard/${post?.author}`} className="underline cursor-pointer hover:text-zinc-900 transition-all duration-100 font-bold">{post?.author}</NavLink ></p>
+
                 <h1 className="text-[4vw] tablet:text-[6vw] mobile:text-[9vw] text-white w-full content">
                   {post?.title}
                 </h1>
@@ -181,8 +183,6 @@ function Post() {
                   {parse(post?.content)}
                 </p>
               </div>
-              {/* <p>{liked ? `liked by,${user?.name} and ${likesCount} others` : `${post.author} and ${likesCount} others`}</p>
-              <p>{liked && {likesCount }}</p> */}
             </div>
             {isAuthor && (
               <div className="flex gap-3 mt-[10px] mobile:mt-[40px]">
