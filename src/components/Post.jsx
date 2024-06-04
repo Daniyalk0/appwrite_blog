@@ -64,7 +64,7 @@ function Post() {
       service.deletePost(post.$id).then((file) => {
         if (file) {
           setLoading(false);
-          service.deleteFile(post.featuredImage);
+          service.deleteFile(post.ImageId);
           navigate("/");
         }
       });
