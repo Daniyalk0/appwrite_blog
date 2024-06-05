@@ -23,6 +23,7 @@ function Login() {
   } = useForm();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [PassError, setPassError] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false)
 
@@ -48,19 +49,13 @@ function Login() {
     } catch (error) {
       setLoading(false)
       setError(error.message)
+      if (error.message === 'Invalid credentials. Please check the email and password.') {
+        alert(error.message)
+      }
+      console.log(error.message);
     }
   };
 
-
-  function onpass(e) {
-    const pass = e.target.value
-    if (pass) {
-      console.log('pass', pass);
-      setError('')
-    }else{
-      console.log('no eeee');
-    }
-  }
 
   return (
     <Container className='h-screen'>
@@ -109,7 +104,7 @@ function Login() {
                   })}
                 />
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.9vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
                 >
                   {errors.email ? errors.email.message : null}
                 </p>
@@ -123,18 +118,17 @@ function Login() {
                   {...register("password", {
                     required: "Password is Required*", 
                   })}
-                  onChange={(e) => onpass(e)}
                 />
                 <PasswordShow onClick={() => setShowPassword(prev => !prev)} content={showPassword ? <FaRegEyeSlash /> : <FaRegEye/>}/>
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.9vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
                 >
                   {errors.password ? errors.password.message : null}
                 </p>
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.9vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
                 >
-                  {error ? 'Incorrect Password': null}
+                  {PassError ? 'Incorrect Password': null}
                 </p>
               </div>
 

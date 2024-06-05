@@ -17,6 +17,7 @@ function Post() {
   const [likeLoading, setlikeLoading] = useState();
   const [user, setuser] = useState(null);
   const [likedUsers, setLikedUsers] = useState([]);
+  const location = useLocation();
   // const userdata = useSelector((state) => state.auth.userData);
 
   const userData = useSelector((state) => state.auth.userData);
@@ -30,7 +31,6 @@ function Post() {
       alert("no user data");
     }
   }, [userData]);
-
 
   const likeId = userData?.$id.slice(-5) + post?.$id.slice(-5);
   console.log("like Id", likeId);
@@ -61,13 +61,12 @@ function Post() {
   const deletePost = async () => {
     setLoading(true);
     if (post) {
-      service.deletePost(post.$id).then((file) => {
-        if (file) {
-          setLoading(false);
-          service.deleteFile(post.ImageId);
-          navigate("/");
-        }
-      });
+      setTimeout(() => {
+        service.deleteFile(post.imageId);
+        service.deletePostAndLikes(post.$id);
+        setLoading(false);
+        navigate("/");
+      }, 1000);
     }
   };
 
@@ -135,45 +134,53 @@ function Post() {
                 alt="no image"
                 className="rounded-xl  w-[100%] max-h-[420px] hover:shadow-md hover:shadow-zinc-400 transition-all duration-200 object-fit"
               />
-               <div className=" items-center  w-full ml-[120px] mt-[5px] tablet:justify-center  hidden tablet:flex tablet:ml-[0px]">
-              <div
-                className="flex bg-blue-900 p-1 w-[45px] justify-around rounded-lg text-zinc-200 cursor-pointer"
-                onClick={likePost}
-              >
-                <div>{likesCount}</div>
-                <p>
-                  {likeLoading ? (
-                    <Oval
-                      visible={true}
-                      height={20}
-                      width={20}
-                      color="#4fa94d"
-                      ariaLabel="oval-loading"
-                      wrapperStyle={{}}
-                      wrapperClass=""
-                    />
-                  ) : liked ? (
-                    <i
-                      className="fa fa-heart"
-                      style={{ color: "#ff0000" }}
-                      aria-hidden="true"
-                    ></i>
-                  ) : (
-                    <i className="far fa-heart" aria-hidden="true"></i>
-                  )}
+              <div className=" items-center  w-full ml-[120px] mt-[5px] tablet:justify-center  hidden tablet:flex tablet:ml-[0px]">
+                <div
+                  className="flex bg-blue-900 p-1 w-[45px] justify-around rounded-lg text-zinc-200 cursor-pointer"
+                  onClick={likePost}
+                >
+                  <div>{likesCount}</div>
+                  <p>
+                    {likeLoading ? (
+                      <Oval
+                        visible={true}
+                        height={20}
+                        width={20}
+                        color="#4fa94d"
+                        ariaLabel="oval-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                      />
+                    ) : liked ? (
+                      <i
+                        className="fa fa-heart"
+                        style={{ color: "#ff0000" }}
+                        aria-hidden="true"
+                      ></i>
+                    ) : (
+                      <i className="far fa-heart" aria-hidden="true"></i>
+                    )}
+                  </p>
+                </div>
+                <p className="ml-[6px] mt-[4px] text-[15px] profile dark:text-white">
+                  {likedUsers.length === 1 && `liked by  ${likedUsers[0]}`}
+                  {likedUsers.length === 0 && "be the First like!"}
+                  {likedUsers.length > 1 &&
+                    `Liked by ${post?.author} and ${
+                      likedUsers.length - 1
+                    } others`}
                 </p>
               </div>
-              <p className="ml-[6px] mt-[4px] text-[15px] profile dark:text-white">
-                {likedUsers.length === 1 && `liked by  ${likedUsers[0]}`}
-                {likedUsers.length === 0 && "be the First like!"}
-                {likedUsers.length > 1 &&
-                  `Liked by ${post?.author} and ${
-                    likedUsers.length - 1
-                  } others`}
-              </p>
-            </div>
               <div className=" w-[100%] flex  flex-col items-left mx-[3vw] flex-wrap tablet:mt-[30px] mobile:mt-[50px]">
-              <p className="text-[13px] text-zinc-800">posted by: <NavLink to={`/userCard/${post?.author}`} className="underline cursor-pointer hover:text-zinc-900 transition-all duration-100 font-bold">{post?.author}</NavLink ></p>
+                <p className="text-[13px] text-zinc-800 dark:text-zinc-300">
+                  posted by:{" "}
+                  <NavLink
+                    to={`/userCard/${post?.author}`}
+                    className="underline-offset-1 cursor-pointer hover:text-zinc-900 transition-all duration-100 font-bold dark:text-white"
+                  >
+                    {post?.author}
+                  </NavLink>
+                </p>
 
                 <h1 className="text-[4vw] tablet:text-[6vw] mobile:text-[9vw] text-white w-full content">
                   {post?.title}

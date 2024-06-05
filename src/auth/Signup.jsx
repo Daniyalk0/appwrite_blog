@@ -50,6 +50,9 @@ function Signup() {
     } catch (error) {
       setLoading(false);
       seterror(error.message);
+      if (error) {
+        alert('User with same email is already exists!')
+      }
       console.log("error in crerating", error);
     }
   };
@@ -104,7 +107,7 @@ function Signup() {
                   })}
                 />
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] 
+                  className={`absolute top-[100%] left-[2%] text-[0.9vw] 
                   tablet:text-[1vw]  text-red-500 ${
                     errors.name ? "" : "border-red-500"
                   } font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
@@ -126,7 +129,7 @@ function Signup() {
                   })}
                 />
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.9vw]  text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
                 >
                   {errors.email ? errors.email.message : null}
                 </p>
@@ -157,7 +160,7 @@ function Signup() {
                   />
                   <PasswordShow onClick={() => setShowPassword(prev => !prev)} content={showPassword ? <FaRegEyeSlash /> : <FaRegEye/>}/>
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.9vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
                 >
                   {errors.password ? errors.password.message : null}
                 </p>
@@ -179,7 +182,7 @@ function Signup() {
                   <PasswordShow onClick={() => setShowPasswordConfirm(prev => !prev)} content={showPasswordConfirm ? <FaRegEyeSlash /> : <FaRegEye/>}/>
 
                 <p
-                  className={`absolute top-[100%] left-[2%] text-[0.7vw] text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
+                  className={`absolute top-[100%] left-[2%] text-[0.9vw]  text-red-500 font-bold mobile:left-[6%] mobile:text-[1.8vw]`}
                 >
                   {errors.confirmPassword
                     ? errors.confirmPassword.message

@@ -70,19 +70,28 @@ export class ConfigService {
     }
   }
 
-  async deletePost(slug) {
+  async deletePostAndLikes(postId){
     try {
-      await this.databases.deleteDocument(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionId,
-        slug
+      // Fetch all likes associated with the post
+      const likesResponse = await this.databases.listDocuments(conf.appwriteDatabaseId, conf.appwriteLikesCollectionId, [
+        Query.equal('postId', postId)
+      ]);
+  
+      // Delete each like
+      const deleteLikePromises = likesResponse.documents.map(like => 
+        this.databases.deleteDocument(conf.appwriteDatabaseId, 
+          conf.appwriteLikesCollectionId, like.$id)
       );
-      return true;
+      await Promise.all(deleteLikePromises);
+  
+      // Delete the post
+      await this.databases.deleteDocument(conf.appwriteDatabaseId,conf.appwriteCollectionId, postId); 
+  
+      console.log('Post and associated likes deleted successfully');
     } catch (error) {
-      console.log("Appwrite serive :: deletePost :: error", error);
-      return false;
+      console.error('Error deleting post and likes:', error);
     }
-  }
+  }; 
 
   async getPost(slug) {
     try {
@@ -258,18 +267,7 @@ export class ConfigService {
     }
   }
 
-  // async showLikes(postId) {
-  //   try {
-  //     const query = Query.equal("postId", postId);
 
-  //     this.databases.listDocuments(
-
-  //     )
-  //   } catch (error) {
-  //     console.log("Appwrite serive :: showLikes:: error  ", error);
-  //   }
-  // }
-  // file upload service
 
   async uploadFile(file) {
     try {
