@@ -26,6 +26,7 @@ export class ConfigService {
     likes = 0,
     userLiked,
     email,
+    DPid,
   }) {
     try {
       return await this.databases.createDocument(
@@ -43,6 +44,7 @@ export class ConfigService {
           likes,
           userLiked,
           email,
+          DPid,
         }
       );
     } catch (error) {
@@ -50,7 +52,10 @@ export class ConfigService {
       return false;
     }
   }
-  async updatePost(slug, { title, content, featuredImage, status, author, email }) {
+  async updatePost(
+    slug,
+    { title, content, featuredImage, status, author, email }
+  ) {
     try {
       return await this.databases.updateDocument(
         conf.appwriteDatabaseId,
@@ -70,28 +75,86 @@ export class ConfigService {
     }
   }
 
-  async deletePostAndLikes(postId){
+  async updatePostAuthor(slug, author) {
+    try {
+      // Construct the update object with only the `author` field
+      const updateObject = { author };
+
+      // Call Appwrite's updateDocument method
+      return await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        slug,
+        updateObject
+      );
+    } catch (error) {
+      console.log("Appwrite service :: updatePostAuthor :: error", error);
+    }
+  }
+  async updatePostDP(slug, DPid) {
+    try {
+      // Construct the update object with only the `author` field
+      const updateObject = { DPid };
+
+      // Call Appwrite's updateDocument method
+      return await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        slug,
+        updateObject
+      );
+    } catch (error) {
+      console.log("Appwrite service :: updatePostAuthor :: error", error);
+    }
+  }
+  async updatePostEmail(slug, email) {
+    try {
+      // Construct the update object with only the `author` field
+      const updateObject = { email };
+
+      // Call Appwrite's updateDocument method
+      return await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        slug,
+        updateObject
+      );
+    } catch (error) {
+      console.log("Appwrite service :: updatePostAuthor :: error", error);
+    }
+  }
+
+  async deletePostAndLikes(postId) {
     try {
       // Fetch all likes associated with the post
-      const likesResponse = await this.databases.listDocuments(conf.appwriteDatabaseId, conf.appwriteLikesCollectionId, [
-        Query.equal('postId', postId)
-      ]);
-  
+      const likesResponse = await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteLikesCollectionId,
+        [Query.equal("postId", postId)]
+      );
+
       // Delete each like
-      const deleteLikePromises = likesResponse.documents.map(like => 
-        this.databases.deleteDocument(conf.appwriteDatabaseId, 
-          conf.appwriteLikesCollectionId, like.$id)
+      const deleteLikePromises = likesResponse.documents.map((like) =>
+        this.databases.deleteDocument(
+          conf.appwriteDatabaseId,
+          conf.appwriteLikesCollectionId,
+          like.$id
+        )
       );
       await Promise.all(deleteLikePromises);
-  
+
       // Delete the post
-      await this.databases.deleteDocument(conf.appwriteDatabaseId,conf.appwriteCollectionId, postId); 
-  
-      console.log('Post and associated likes deleted successfully');
+      await this.databases.deleteDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionId,
+        postId
+      );
+
+      console.log("Post and associated likes deleted successfully");
     } catch (error) {
-      console.error('Error deleting post and likes:', error);
+      console.error("Error deleting post and likes:", error);
     }
-  }; 
+  }
 
   async getPost(slug) {
     try {
@@ -109,7 +172,7 @@ export class ConfigService {
   async getPosts(queries = []) {
     try {
       // Default query to fetch active posts
-      const defaultQuery = Query.equal('status', 'active');
+      const defaultQuery = Query.equal("status", "active");
 
       // Combine default query with additional queries
       const allQueries = [defaultQuery, ...queries];
@@ -120,11 +183,11 @@ export class ConfigService {
         conf.appwriteCollectionId,
         allQueries
       );
-      return response
-      
+      return response;
+
       // return response.documents;
     } catch (error) {
-      console.error('Appwrite service :: getPosts :: error', error);
+      console.error("Appwrite service :: getPosts :: error", error);
       return false;
     }
   }
@@ -252,7 +315,7 @@ export class ConfigService {
         postId
       );
       const userLiked = document.userLiked;
-      const filterUnlikeUser = userLiked.filter((like) => like !== user)
+      const filterUnlikeUser = userLiked.filter((like) => like !== user);
 
       return await this.databases.updateDocument(
         conf.appwriteDatabaseId,
@@ -267,7 +330,20 @@ export class ConfigService {
     }
   }
 
-
+  async uploadDP(file) {
+    try {
+      const data = await this.storage.createFile(
+        conf.appwriteProfileBucketId,
+        ID.unique(),
+        file
+      );
+      console.log("uploadDPPPPPP", data);
+      return data;
+    } catch (error) {
+      console.log("Appwrite serive :: uploadFile :: error", error);
+      return false;
+    }
+  }
 
   async uploadFile(file) {
     try {
@@ -282,9 +358,40 @@ export class ConfigService {
     }
   }
 
+  async fetchFilesByUserId(userId) {
+    try {
+      const response = await this.storage.listFiles(
+        conf.appwriteProfileBucketId, // Your bucket ID
+        100 // Number of files to retrieve (adjust as needed)
+      );
+
+      // Filter files manually based on user ID in permissions
+      const userFiles = response.files.filter((file) =>
+        file.$permissions.some((permission) =>
+          permission.includes(`user:${userId}`)
+        )
+      );
+
+      console.log("Files retrieved:", userFiles);
+      return userFiles; // Return the filtered list of files
+    } catch (error) {
+      console.error("Failed to fetch files:", error);
+      return [];
+    }
+  }
+
   async deleteFile(fileId) {
     try {
       await this.storage.deleteFile(conf.appwriteBucketId, fileId);
+      return true;
+    } catch (error) {
+      console.log("Appwrite serive :: deleteFile :: error", error);
+      return false;
+    }
+  }
+  async deleteDP(fileId) {
+    try {
+      await this.storage.deleteFile(conf.appwriteProfileBucketId, fileId);
       return true;
     } catch (error) {
       console.log("Appwrite serive :: deleteFile :: error", error);
@@ -299,6 +406,22 @@ export class ConfigService {
       console.log("Appwrite serive :: previewFile :: error", error);
     }
   }
+  getDPPreview(fileId) {
+    try {
+      return this.storage.getFilePreview(conf.appwriteProfileBucketId, fileId);
+    } catch (error) {
+      console.log("Appwrite serive :: previewFile :: error", error);
+    }
+  }
+
+  //  async fetchFilesByUser (userId){
+  //     try {
+  //         const response = await this.databases.listDocuments('files', [`userId=${userId}`]);
+  //        return response.documents
+  //     } catch (error) {
+  //         console.error('Error fetching files:', error);
+  //     }
+  // };
 }
 
 const configService = new ConfigService();

@@ -7,16 +7,17 @@ import { NavLink, useParams } from "react-router-dom";
 
 function AllPosts() {
   const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState()
   const [loading, setLoading] = useState(false);
   const [date, setdate] = useState({day: '', month: '', year: ''})
-    
-    // console.log('post', posts);
+ 
 
   
   const allposts = async () => {
     const postsData = await useSelector((state) => state.posts.postsData);
     if (postsData) {
       setPosts(postsData);
+      // console.log(postsData);
     } else {
       console.log('no posts in allposts!!');
     }

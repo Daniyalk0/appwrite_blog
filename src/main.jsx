@@ -22,6 +22,7 @@ import EditPost from "./components/EditPost.jsx";
 import '@fortawesome/fontawesome-free/css/all.min.css';  // Import Font Awesome CSS
 import './index.css';
 import Usercard from "./components/Usercard.jsx";
+import EditProfile from "./components/EditProfile.jsx";
 
 
 const router = createBrowserRouter([
@@ -106,6 +107,15 @@ const router = createBrowserRouter([
         {
             path: "/post/:slug",
             element: <Post/>
+        },
+        {
+            path: "/EditProfile/:slug",
+            element: (
+                <AuthLayout authentication>
+                    {" "}
+                    <EditProfile />
+                </AuthLayout>
+            ),
         },
     ],
 },

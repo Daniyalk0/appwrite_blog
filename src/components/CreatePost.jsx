@@ -18,7 +18,15 @@ function CreatePost({ post }) {
   const [slugg, setSlug] = useState("");
   const [loading, setLoading] = useState(false);
   const [emaill, setEmail] = useState(false);
+  const [gotDP, setGotDP] = useState(null);
+
   const loaction = useLocation();
+  const userDP = useSelector((state) => state.userDP.userPic);
+  useEffect(() => {
+    if (userDP) {
+      setGotDP(userDP);
+    }
+  }, []);
 
   const [ids, setIds] = useState();
 
@@ -92,10 +100,11 @@ function CreatePost({ post }) {
           slug: ids,
           userId: userData.$id,
           date: date,
+          DPid: gotDP,
         });
 
         if (dbPost) {
-          navigate("/");
+          navigate("/allPosts");
         }
       }
     }

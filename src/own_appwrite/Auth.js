@@ -28,7 +28,7 @@ export class AuthService {
       }
     } catch (error) {
       console.log("error in createAccount!", error);
-      throw error
+      throw error;
     }
   }
   async login({ email, password }) {
@@ -53,6 +53,21 @@ export class AuthService {
       await this.account.deleteSessions();
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async updateNamee(data) {
+    try {
+      return await this.account.updateName(data.name);
+    } catch (error) {
+      console.log("error in update user name", error);
+    }
+  }
+  async updateEmaill(data) {
+    try {
+      return await this.account.updateEmail(data.email);
+    } catch (error) {
+      console.log("error in update user email", error);
     }
   }
 }
