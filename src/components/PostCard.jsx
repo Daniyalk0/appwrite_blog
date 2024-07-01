@@ -104,7 +104,6 @@ function PostCard({
         setLikesCount(newLikes);
         setlikeLoading(false);
 
-        console.log("postlikes", postLikes);
         setLiked(true);
       }
     } catch (error) {

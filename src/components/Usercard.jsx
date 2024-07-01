@@ -3,9 +3,6 @@ import Container from "./Container";
 import { NavLink, useParams } from "react-router-dom";
 import service from "../own_appwrite/Config";
 import { Query } from "appwrite";
-import parse from "html-react-parser";
-import PostCard from "./PostCard";
-import { FaUser } from "react-icons/fa6";
 import { DNA } from "react-loader-spinner";
 import image from "../images/userCardBg.jpg";
 import { FaCircleUser } from "react-icons/fa6";
@@ -18,7 +15,13 @@ function Usercard({ user }) {
 
   const query = [Query.equal("author", slug)];
 
-  // console.log(image);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      setLoading(false)
+    }, 1500);
+  }, []);
+
   useEffect(() => {
     service.getPosts(query).then((post) => {
       if (post) {
@@ -28,7 +31,7 @@ function Usercard({ user }) {
         } else {
           console.log("noDPid");
         }
-        setLoading(false);
+        // setLoading(false);
       } else {
         console.log("no posts in userCard");
       }
@@ -77,6 +80,32 @@ function Usercard({ user }) {
               </NavLink>
             ))}
           </div>
+      {loading && (
+        <>
+        <div className="absolute inset-0 bg-black opacity-90 w-screen top-[-50%] z-[10] mobile:h-screen mobile:top-0" />
+          {" "}
+          <div className="mobile:hidden absolute z-50 top-[30%]">
+            <DNA
+              visible={true}
+              height="100"
+              width="100"
+              ariaLabel="dna-loading"
+              wrapperStyle={{}}
+              wrapperClass="dna-wrapper"
+            />
+          </div>
+          <div className="mobile:block hidden absolute z-50 top-[45%] ">
+            <DNA
+              visible={true}
+              height="100"
+              width="100"
+              ariaLabel="dna-loading"
+              wrapperStyle={{}}
+              wrapperClass="dna-wrapper"
+            />
+          </div>
+        </>
+      )}
         </div>
       </div>
     </Container>

@@ -63,13 +63,7 @@ export class AuthService {
       console.log("error in update user name", error);
     }
   }
-  async updateEmaill(data) {
-    try {
-      return await this.account.updateEmail(data.email);
-    } catch (error) {
-      console.log("error in update user email", error);
-    }
-  }
+ 
 }
 
 const authService = new AuthService();

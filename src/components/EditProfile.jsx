@@ -62,19 +62,6 @@ function EditProfile() {
     });
   };
 
-  const fetchFiles = async () => {
-    if (!userId) return; // If userId is not available, return early
-
-    try {
-      const fetchedFiles = await Config.fetchFilesByUserId(userId);
-      console.log(fetchedFiles);
-      if (fetchedFiles) {
-        dispatch(getDPid(fetchedFiles[0].$id));
-      }
-    } catch (error) {
-      console.error("Failed to fetch files:", error);
-    }
-  };
   // console.log(posts[0]?.$id);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -98,7 +85,7 @@ function EditProfile() {
       setGotDP(userDP);
     }
   }, []);
-
+  
   const { register, setValue, getValues, watch, handleSubmit } = useForm();
   useEffect(() => {
     if (user) {
@@ -106,53 +93,49 @@ function EditProfile() {
       setValue("email", user.email);
     }
   }, [user, setValue]);
-
+  
   const navigate = useNavigate();
+  
+  const fetchFiles = async () => {
+    if (!userId) return; // If userId is not available, return early
 
+    try {
+      const fetchedFiles = await Config.fetchFilesByUserId(userId);
+      console.log(fetchedFiles);
+      if (fetchedFiles) {
+        dispatch(getDPid(fetchedFiles[0]?.$id));
+        setUpdateLoading(false);
+        navigate('/profile')
+      }
+    } catch (error) {
+      console.error("Failed to fetch files:", error);
+    }
+  };
   const handleUpdate = async (data) => {
     setUpdateLoading(true);
     try {
-      console.log(data);
       const updatedName = await Auth.updateNamee(data);
       if (updatedName) {
         await Config.updatePostAuthor(posts[0]?.$id, data.name);
-        navigate("/profile");
         getUserDataAfterUpdate();
       } else {
-        navigate("/profile");
         // return;
       }
       // if (!updatedName) return;
-
-      const updatedEmail = await Auth.updateEmaill(data);
-      if (updatedEmail) {
-        await Config.updatePostEmail(posts[0]?.$id, data.email);
-        navigate("/profile");
-        getUserDataAfterUpdate();
-      } else {
-        navigate("/profile");
-       
-      }
 
       if (gotDP && imageUrl) {
         console.log("existing!!");
         const deleteDP = await Config.deleteDP(gotDP);
         if (deleteDP) {
-          // const deleteDPid = await Config.updateDP(null, userdata.$id);
-          // if (deleteDPid) {
           const uploadDP = await Config.uploadDP(image);
           if (uploadDP) {
             const dpid = uploadDP.$id;
-            Config.updatePostDP(posts[0]?.$id, dpid);
+            await Config.updatePostDP(posts[0]?.$id, dpid);
 
             dispatch(update(data));
-            setTimeout(() => {
-              navigate("/profile");
-            }, 1000);
             // }
           }
         }
-        navigate("/profile");
       } else {
         console.log("new!!");
 
@@ -160,14 +143,11 @@ function EditProfile() {
         if (DP) {
           const DPid = DP.$id;
           console.log("dpid", DPid);
-          Config.updatePostDP(posts[0]?.$id, DPid);
+          await Config.updatePostDP(posts[0]?.$id, DPid);
         }
       }
       dispatch(update(data));
-      fetchFiles();
-      setTimeout(() => {
-        navigate("/profile");
-      }, 1000);
+      await fetchFiles();
     } catch (error) {
       console.log("errorrrrrrr", error);
     }
@@ -223,6 +203,7 @@ function EditProfile() {
           </div>
           <div>
             <Input
+            disabled={true}
               className="h-[40px] text-zinc-800"
               label="Email: "
               {...register("email", {
