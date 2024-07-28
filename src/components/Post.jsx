@@ -182,7 +182,7 @@ function Post() {
                   </NavLink>
                 </p>
 
-                <h1 className="text-[4vw] tablet:text-[6vw] mobile:text-[9vw] text-white w-full content">
+                <h1 className="text-[2vw] tablet:text-[6vw] mobile:text-[9vw] text-white w-full content">
                   {post?.title}
                 </h1>
 
