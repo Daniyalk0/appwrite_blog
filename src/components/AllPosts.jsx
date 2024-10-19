@@ -38,7 +38,7 @@ function AllPosts() {
   return (
     <Container className="">
       <div
-        className={`  w-full h-auto py-[50px]  flex justify-center items-center mt-[80px] relative min-h-screen  `}
+        className={`  w-full h-auto py-[50px]  flex justify-center items-center mt-[80px] relative min-h-screen `}
       >
   
 
