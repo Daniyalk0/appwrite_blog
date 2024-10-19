@@ -218,7 +218,7 @@ function PostCard({
         </div>
       </div>
       {loading && (
-        <div className="w-full h-full">
+        <div className="w-full h-full absolute left-0 top-0">
           <Loading />
         </div>
       )}
